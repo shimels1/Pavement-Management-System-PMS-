@@ -1,0 +1,47 @@
+<!-- <h3 >Pavement Inventory</h3> -->
+<!-- <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb><br> -->
+<div class="card">
+  <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <button class="btn btn-primary" (click)="add()">Add User</button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="userItems" [rows]="10" [paginator]="true" styleClass="p-datatable-sm" [rowHover]="true"
+    dataKey="sectionId" [rowsPerPageOptions]="[5,10,25,50]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+    [scrollable]="true" [globalFilterFields]="['sectionId']">
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex p-ai-center p-jc-between">
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:10rem">ID </th>
+        <th style="width:10rem">username </th>
+        <th style="width:10rem">first_name </th>
+        <th style="width:10rem">last_name </th>
+        <th style="width:10rem">role </th>
+        <th style="width:10rem">sex </th>
+        <th style="width:10rem">phone </th>
+        <th style="width:10rem">actions </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rode>
+      <tr>
+        <td style="width:10rem">{{rode.id }}</td>
+        <td style="width:10rem">{{rode.username }}</td>
+        <td style="width:10rem">{{rode.first_name}}</td>
+        <td style="width:10rem">{{rode.last_name }}</td>
+        <td style="width:10rem">{{rode.role }}</td>
+        <td style="width:10rem">{{rode.sex }}</td>
+        <td style="width:10rem">{{rode.phone }}</td>
+        <td style="width:10rem">
+          <button type="button" class="btn btn-" (click)="update(rode)">Update</button><br>
+          <button type="button" class="btn btn-danger" (click)="delete(rode)">Delete</button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>

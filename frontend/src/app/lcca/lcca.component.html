@@ -1,0 +1,58 @@
+<!-- <h3 >Pavement Inventory</h3> -->
+<!-- <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb><br> -->
+<div class="card">
+  <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <button class="btn btn-primary" (click)="add()">Add LCCA</button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="lccaItems" [rows]="10" [paginator]="true" styleClass="p-datatable-sm" [rowHover]="true"
+    dataKey="sectionId" [rowsPerPageOptions]="[5,10,25,50]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+    [scrollable]="true" [globalFilterFields]="['sectionId']">
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            placeholder="Section ID" />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:10rem">Section Id </th>
+        <th style="width:10rem">Inflation Rate </th>
+        <th style="width:10rem">Discount Rate </th>
+        <th style="width:10rem">Section Area </th>
+        <th style="width:10rem">Initial Cost </th>
+        <th style="width:10rem">Analysis Period </th>
+        <th style="width:10rem">Salvage Value </th>
+        <th style="width:10rem">PWC </th>
+        <th style="width:10rem">EUAC </th>
+        <th style="width:10rem">Collected By</th>
+        <th style="width:10rem">Actions </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rode>
+      <tr>
+        <td style="width:10rem">{{rode.sectionId }}</td>
+        <td style="width:10rem">{{rode.inflationRate }}</td>
+        <td style="width:10rem">{{rode.discountRate}}</td>
+        <td style="width:10rem">{{rode.sectionArea }}</td>
+        <td style="width:10rem">{{rode.initialCost }}</td>
+        <td style="width:10rem">{{rode.analysisPeriod }}</td>
+        <td style="width:10rem">{{rode.salvageValue }}</td>
+        <td style="width:10rem">{{rode.PWC }}</td>
+        <td style="width:10rem">{{rode.EUAC }}</td>
+        <td style="width:10rem">{{rode.username }}</td>
+        <td style="width:10rem">
+          <button type="button" class="btn btn-" (click)="update(rode)">Update</button><br>
+          <button type="button" class="btn btn-danger" (click)="delete(rode)">Delete</button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>

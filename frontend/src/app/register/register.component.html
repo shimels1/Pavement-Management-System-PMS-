@@ -1,0 +1,47 @@
+<div class="container card">
+  <div>
+    <form #f="ngForm" class="row  ">
+      <div class="col-md-6">
+        <label for="username" class="form-label">User Name</label>
+        <input type="text" class="form-control" ngModel name="username" #username="ngModel" required>
+      </div>
+      <div class="col-md-6">
+        <label for="first_name" class="form-label">First Name</label>
+        <input type="text" class="form-control" ngModel name="first_name" #first_name="ngModel" required>
+      </div>
+      <div class="col-md-6">
+        <label for="last_name" class="form-label">Last Name</label>
+        <input type="text" class="form-control" ngModel name="last_name" #last_name="ngModel" required>
+      </div>
+      <div class="col-md-6">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" name="password" ngModel #password="ngModel" required>
+      </div>
+      <div class="col-md-6">
+        <label for="password2" class="form-label">Re Password</label>
+        <input type="password" class="form-control" name="password2" ngModel #password2="ngModel" required>
+      </div>
+      <div class="col-md-6">
+        <label for="constructionYear" class="form-label">role</label>
+        <select class="form-control" name="role" id="role" [(ngModel)]="role" required>
+          <option selected value="">Choose...</option>
+          <option value="Data_collecter">Data_collecter</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="sex" class="form-label">sex</label>
+        <input type="text" class="form-control" ngModel name="sex" #sex="ngModel" required>
+      </div>
+      <div class="col-md-6">
+        <label for="phone" class="form-label">phone</label>
+        <input type="number" class="form-control" ngModel name="phone" #phone="ngModel" required>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary"
+        [disabled]="f.form.invalid || f.form.value.password != f.form.value.password2" (click)="save(f)">Save</button>
+    </div>
+  </div>
+</div>

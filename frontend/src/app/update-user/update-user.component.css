@@ -1,0 +1,19 @@
+.container {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  padding: 60px;
+  background: rgb(231, 232, 234);
+}
+.container {
+  padding-left: 150px;
+}
+input, select{
+  width: 60%;
+}
+.modal-footer{
+  padding-right: 200px;
+  padding-top: 15px;
+}

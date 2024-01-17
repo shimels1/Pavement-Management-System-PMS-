@@ -1,0 +1,379 @@
+<form #f="ngForm" (ngSubmit)="savePCI(f)">
+  <fieldset class=" border border-info p-4">
+    <legend class="float-none w-auto p-2">PCI Distress Data Sheet Form</legend>
+    <div class="row g-3 ">
+      <div class="col-md-3">
+        <label for="sectionID" class="form-label">Section ID</label>
+        <input type="text" readonly class="form-control" [value]="sectionID" required>
+      </div>
+      <div class="col-md-3">
+        <label for="branchName" class="form-label">Branch Name</label>
+        <input type="text" class="form-control" ngModel name="branchName" #branchName="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="surveyedBy" class="form-label">Surveyed By</label>
+        <input type="text" class="form-control" name="surveyedBy" ngModel #city="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="constructionYear" class="form-label">Date</label>
+        <input type="date" class="form-control" ngModel name="date" #date="ngModel" required>
+      </div>
+
+      <div class="col-md-3">
+        <label for="sampleLength" class="form-label">Sample Length</label>
+        <input type="number" class="form-control" ngModel name="sampleLength" #length="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="sampleWidth" class="form-label">Sample Width</label>
+        <input type="number" class="form-control" ngModel name="sampleWidth" #city="ngModel" required>
+      </div>
+
+
+      <div class="col-md-3">
+        <label for="sampleArea" class="form-label">Sample Area</label>
+        <input type="number" class="form-control" ngModel name="sampleArea" #city="ngModel" required>
+      </div>
+
+      <div class="col-md-3">
+        <label for="sampleUnit" class="form-label">Sample Unit</label>
+        <input type="number" class="form-control" ngModel name="sampleUnit" #city="ngModel" required>
+      </div>
+
+      <div class="col-md-3">
+        <label for="x" class="form-label">X</label>
+        <input type="number" class="form-control" ngModel name="X" #x="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="y" class="form-label">Y</label>
+        <input type="number" class="form-control" ngModel name="Y" #y="ngModel" required>
+      </div>
+
+      <div class="alert alert-success" role="alert" *ngIf="saveSuccessPopup">
+        Saved
+      </div>
+      <div class="alert alert-danger" role="alert" *ngIf="saveErrorPopup != ''">
+        {{saveErrorPopup}}
+      </div>
+    </div>
+  </fieldset>
+  <br>
+
+  <!-- table -->
+
+  <div class="card">
+    <p-toolbar styleClass="p-mb-4">
+      <ng-template pTemplate="left">
+
+        <a class="btn btn-primary" (click)="open(content)">Add New</a>
+      </ng-template>
+    </p-toolbar>
+    <p-table #dt [value]="PCIValues" [rows]="10" [paginator]="true" [(selection)]="selectedRodes" [rowHover]="true"
+      dataKey="sectionID" [rowsPerPageOptions]="[5,10,25,50]"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+      [scrollable]="true" [globalFilterFields]="['sectionID']">
+      <ng-template pTemplate="header">
+        <tr>
+
+          <th>Number </th>
+          <th>Severity </th>
+          <th>Units </th>
+          <th>Q1 </th>
+          <th>Q2 </th>
+          <th>Q3 </th>
+          <th>Q4 </th>
+          <th>Q5 </th>
+          <th>Q6 </th>
+          <th>Q7 </th>
+          <th>Q8 </th>
+          <th>Q9 </th>
+          <th>Action </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-pciv let-rowIndex="rowIndex">
+        <tr>
+
+          <td>{{pciv.distress_number }}</td>
+          <td>{{pciv.distress_severity }}</td>
+          <td>{{pciv.units }}</td>
+          <td>{{pciv.q1 }}</td>
+          <td>{{pciv.q2 }}</td>
+          <td>{{pciv.q3 }}</td>
+          <td>{{pciv.q4 }}</td>
+          <td>{{pciv.q5 }}</td>
+          <td>{{pciv.q6 }}</td>
+          <td>{{pciv.q7 }}</td>
+          <td>{{pciv.q8 }}</td>
+          <td>{{pciv.q9 }}</td>
+          <td> <button type="button" class="btn btn-danger" (click)="deletePCIv(rowIndex)">Delete</button>
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+
+  <!-- end table -->
+
+  <!-- new dialog -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">PCI value</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="p-3">
+      <fieldset class="border border-info p-4">
+        <legend class="float-none w-auto p-2" style="font-size :12">
+          Distress Number & Type
+        </legend>
+        <div class="row g-6">
+
+          <div class="col-md-2 ">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="1" value="1" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                1 - Aligator Cracking
+              </label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="4" value="4" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                4 - Bumps and Sags
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="7" value="7" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                7 - Edge Cracking
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="10" value="10" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                10 - Long & Rrans Cracking
+              </label>
+            </div>
+          </div>
+
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="13" value="13" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                13 - Potholes
+              </label>
+            </div>
+          </div>
+
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="16" value="16" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                16 - Shoving
+              </label>
+            </div>
+          </div>
+
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="2" value="2" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                2 - Bleeding
+              </label>
+            </div>
+          </div>
+
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="5" value="5" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                5 - Corrugatiion
+              </label>
+            </div>
+          </div>
+
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="8" value="8" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                8 - Jt.Reflection Cracking
+              </label>
+            </div>
+          </div>
+
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="11" value="11" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                11 - Patching & Util Cut Patching
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="14" value="14" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                14 - Railroad Crossing
+              </label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="17" value="17" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                17 - Slippage Cracking
+              </label>
+            </div>
+          </div>
+
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="3" value="3" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                3 - Block Cracking
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="6" value="6" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                6 - Depression
+              </label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="9" value="9" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                9 - Lane/Shoulder Drop off
+              </label>
+            </div>
+          </div>
+
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="12" value="12" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                12 - Polishing Aggregate
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="15" value="15" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                15 - Rutting
+              </label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="18" value="18" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                18 - Swell
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="exampleRadios" id="19" value="19" checked>
+              <label class="form-check-label" for="exampleRadios1">
+                19 - Weathering/Ravelling
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </fieldset>
+    </div>
+
+    <form class=" modal-body row" #f="ngForm" (ngSubmit)="savePCIvalues(f)">
+      <div class="col-md">
+        <label for="branchName" class="form-label">Number</label>
+        <input type="number" class="form-control" ngModel name="distress_number" #distress_number="ngModel" required>
+      </div>
+      <div class="col-md">
+        <label for="functionalClass" class="form-label">Severity</label>
+        <select ngModel name="distress_severity" class="form-select" #distress_severity="ngModel" required>
+          <option selected>Choose...</option>
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+        </select>
+      </div>
+
+      <div class="col-md">
+        <label for="functionalClass" class="form-label">Units</label>
+        <select ngModel name="units" class="form-select" #units="ngModel" required>
+          <option selected>Choose...</option>
+          <option>Area</option>
+          <option>Linear</option>
+          <option>Number</option>
+        </select>
+      </div>
+      <div class="col-md-9">
+        <label for="surveyedBy" class="form-label">Quantity</label>
+        <div class="row g-12">
+          <div class="col-md">
+            <input type="number" class="form-control col-md" name="q1" ngModel #q1="ngModel" required>
+          </div>
+          <div class="col-md">
+            <input type="number" class="form-control col-md" name="q2" ngModel #q2="ngModel">
+          </div>
+          <div class="col-md">
+            <input type="number" class="form-control col-md" name="q3" ngModel #q3="ngModel" value="0">
+          </div>
+          <div class="col-md">
+            <input type="number" class="form-control col-md" name="q4" ngModel #q4="ngModel">
+          </div>
+          <div class="col-md">
+            <input type="number" class="form-control col-md" name="q5" ngModel #q5="ngModel">
+          </div>
+          <div class="col-md">
+            <input type="number" class="form-control col-md" name="q6" ngModel #q6="ngModel">
+          </div>
+          <div class="col-md">
+            <input type="number" class="form-control col-md" name="q7" ngModel #q7="ngModel">
+          </div>
+          <div class="col-md">
+            <input type="number" class="form-control col-md" name="q8" ngModel #q8="ngModel">
+          </div>
+          <div class="col-md">
+            <input type="number" class="form-control col-md" name="q9" ngModel #q9="ngModel">
+          </div>
+        </div><br>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" [disabled]="f.form.invalid">Save</button>
+      </div>
+
+    </form>
+
+  </ng-template>
+
+  <!-- end dialog -->
+  <div class="justify-content-end nav pt-3">
+    <button type="submit" class="btn btn-primary " [disabled]="f.form.invalid">Save</button>
+  </div>
+
+</form>

@@ -1,0 +1,14 @@
+:host ::ng-deep .p-dialog .product-image {
+  width: 150px;
+  margin: 0 auto 2rem auto;
+  display: block;
+}
+@media print {
+  .doNotPrint {
+    display: none !important;
+  }
+}
+h2 {
+  margin: auto;
+  padding: 10px;
+}

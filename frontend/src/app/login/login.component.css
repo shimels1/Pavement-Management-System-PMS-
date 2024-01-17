@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  padding: 60px;
+  background: rgb(231, 232, 234);
+}
+.container {
+  padding-left: 65px;
+}
+input,
+select {
+  width: 100%;
+}
+button {
+  width: 100%;
+  margin-top: 15px;
+}

@@ -1,0 +1,20 @@
+<div class="container card">
+  <div>
+
+    <form #f="ngForm" class="col  ">
+      <div class="col-md-12">
+        <label for="username" class="form-label">User Name</label>
+        <input type="text" class="form-control" ngModel name="username" #username="ngModel" required>
+      </div>
+
+      <div class="col-md-12">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" name="password" ngModel #password="ngModel" required>
+      </div>
+
+    </form>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary" [disabled]="f.form.invalid" (click)="save(f)">Login</button>
+    </div>
+  </div>
+</div>

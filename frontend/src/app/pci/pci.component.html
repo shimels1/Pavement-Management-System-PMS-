@@ -1,0 +1,286 @@
+<!-- <h2 >Pavement condition Assessment</h2> -->
+<p-breadcrumb [model]="items" [home]="home"></p-breadcrumb><br>
+<div class="card">
+  <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <a class="btn btn-primary" (click)="navigateToAddNewPCI()">Add New Sample Unit</a>
+    </ng-template>
+
+  </p-toolbar>
+  <p-table #dt [value]="rodes" [rows]="10" [paginator]="true" styleClass="p-datatable-sm" [(selection)]="selectedRodes"
+    [rowHover]="true" dataKey="sectionID" [rowsPerPageOptions]="[5,10,25,50]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+    [scrollable]="true" [globalFilterFields]="['sectionID']">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 8rem">
+          Chainage</th>
+        <th style="width: 8rem">
+          Authority</th>
+        <th style="width: 8rem">
+          Branch Name</th>
+        <th style="width: 8rem">
+          Surveyed By</th>
+        <th style="width: 8rem">
+          Section ID</th>
+        <th style="width: 8rem">
+          Date</th>
+        <th style="width: 8rem">
+          Sample Length</th>
+        <th style="width: 8rem">
+          Sample Width</th>
+        <th style="width: 8rem">
+          Sample Area</th>
+        <th style="width: 8rem">
+          Sample Unit</th>
+        <th style="width: 10rem">
+          PCI value</th>
+        <th style="width: 10rem">
+          Total Deduction</th>
+        <th style="width: 10rem">
+          Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rode>
+      <tr>
+        <td style="width: 8rem">{{rode.rodeInfo.chainage}}</td>
+        <td style="width: 8rem">{{rode.rodeInfo.authority}}</td>
+        <td style="width: 8rem">{{rode.rodeInfo.branchNumber}}</td>
+        <td style="width: 8rem">{{rode.rodeInfo.
+          surveyedBy}}</td>
+        <td style="width: 8rem">{{rode.rodeInfo.
+          sectionID}}</td>
+        <td style="width: 8rem">{{rode.rodeInfo.
+          date | date: 'dd/MM/yyyy'}}
+          <p *ngIf="rode.rodeInfo.date == null
+             "> null </p>
+        </td>
+        <td style="width: 8rem">{{rode.rodeInfo.
+          sampleLength}}</td>
+        <td style="width: 8rem">{{rode.rodeInfo.
+          sampleWidth}}</td>
+        <td style="width: 8rem">{{rode.rodeInfo.
+          sampleArea}}</td>
+        <td style="width: 8rem">{{rode.rodeInfo.
+          sampleUnit}}</td>
+        <td style="width: 8rem">
+          <button type="button" class="btn btn-light" (click)="open(content,rode.rodeInfo.idpci)">view</button>
+        </td>
+        <td style="width: 8rem">
+          <button type="button" class="btn btn-light"
+            (click)="openCalculation(content2,rode.rodeInfo.idpci)">view</button>
+        </td>
+        <td style="width: 10rem">
+
+          <button type="button" class="btn btn-light" (click)="openResult(content3,rode)">more</button>
+          <br>
+          <button type="button" class="btn btn-danger" (click)="deletepci(rode.rodeInfo.idpci)">Delete</button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+
+
+<!-- view quantity  dialog -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">PCI value</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+
+  <p-table #dt [value]="PCIValues" [rows]="10" styleClass="p-datatable-sm" [(selection)]="selectedRodes"
+    [rowHover]="true" dataKey="sectionID" [scrollable]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 7rem">Number </th>
+        <th style="width: 7rem">Severity </th>
+        <th style="width: 7rem">Units </th>
+        <th style="width: 7rem">Total quantity </th>
+        <th style="width: 7rem">Density(%) </th>
+        <th style="width: 7rem">DV </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pciv let-rowIndex="rowIndex">
+      <tr>
+        <td style="width: 7rem">{{pciv.distress_number }}</td>
+        <td style="width: 7rem">{{pciv.distress_severity }}</td>
+        <td style="width: 7rem">{{pciv.units }}</td>
+        <td style="width: 7rem">
+          {{
+          totalpci[rowIndex] | number : '1.0-2' }}
+        </td>
+        <td style="width: 7rem">
+          {{
+          totalDencity[rowIndex] | number : '1.0-2' }}
+        </td>
+        <td style="width: 7rem">
+          {{
+          DVs2[rowIndex] | number : '1.0-2' }}
+        </td>
+
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>
+
+<!-- end dialog -->
+
+
+
+
+<!-- view quantity  dialog -->
+<ng-template #content2 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Total Deduction</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+
+  <p-table #dt [value]="dedactValues" [rows]="10" styleClass="p-datatable-sm" [(selection)]="selectedRodes"
+    [rowHover]="true" dataKey="sectionID" [scrollable]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 5rem">v1 </th>
+        <th style="width: 5rem">v2 </th>
+        <th style="width: 5rem">v3 </th>
+        <th style="width: 5rem">v4 </th>
+        <th style="width: 5rem">v5 </th>
+        <th style="width: 5rem">v6 </th>
+        <th style="width: 5rem">v7 </th>
+        <th style="width: 5rem">v8 </th>
+        <th style="width: 5rem">v9 </th>
+        <th style="width: 5rem">v10</th>
+        <th style="width: 5rem">TDV</th>
+        <th style="width: 5rem">Q</th>
+        <th style="width: 5rem">CDV</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pciv let-rowIndex="rowIndex">
+      <tr>
+        <td style="width: 5rem">
+          <span *ngIf="pciv.v1">{{pciv.v1 | number : '1.0-2' }}</span>
+        </td>
+        <td style="width: 5rem"><span *ngIf="pciv.v2">{{pciv.v2 | number : '1.0-2' }}</span></td>
+        <td style="width: 5rem"><span *ngIf="pciv.v3">{{pciv.v3 | number : '1.0-2' }}</span></td>
+        <td style="width: 5rem"><span *ngIf="pciv.v4">{{pciv.v4 | number : '1.0-2' }}</span></td>
+        <td style="width: 5rem"><span *ngIf="pciv.v5">{{pciv.v5 | number : '1.0-2' }}</span></td>
+        <td style="width: 5rem"><span *ngIf="pciv.v6">{{pciv.v6 | number : '1.0-2' }}</span></td>
+        <td style="width: 5rem"><span *ngIf="pciv.v7">{{pciv.v7 | number : '1.0-2' }}</span></td>
+        <td style="width: 5rem"><span *ngIf="pciv.v8">{{pciv.v8 | number : '1.0-2' }}</span></td>
+        <td style="width: 5rem"><span *ngIf="pciv.v9">{{pciv.v9 | number : '1.0-2' }}</span></td>
+        <td style="width: 5rem"><span *ngIf="pciv.v10">{{pciv.v10 | number : '1.0-2' }}</span></td>
+        <td style="width: 5rem">{{pciv.total | number : '1.0-2' }}</td>
+        <td style="width: 5rem">{{pciv.q | number : '1.0-2' }}</td>
+        <td style="width: 5rem">{{pciv.cdv | number : '1.0-2' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-template>
+
+<!-- end dialog -->
+
+
+<!-- view result  dialog -->
+<ng-template #content3 let-modal>
+  <div id="printableArea">
+    <div class="modal-header">
+      <h4 class="modal-title">PCI Distress Data</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div>
+
+      <div class="row p-4">
+        <table>
+
+          <tr>
+            <td>
+              <p><b>Section ID:</b> &Tab;&Tab;{{openResultValue.rodeInfo?.sectionID}}</p>
+            </td>
+            <td>
+              <p><b>Branch Name:</b> &Tab;&Tab;{{openResultValue.rodeInfo?.branchNumber}}</p>
+            </td>
+            <td>
+              <p><b>Surveyed By:</b>&Tab;&Tab;{{openResultValue.rodeInfo?.surveyedBy}}</p>
+            </td>
+            <td>
+              <p><b>Date:</b>&Tab;&Tab;{{openResultValue.rodeInfo?.date | date}}</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <p><b>Sample Length:</b>&Tab;&Tab;{{openResultValue.rodeInfo?.sampleLength}}</p>
+            </td>
+            <td>
+              <p><b>Sample Width:</b>&Tab;&Tab;{{openResultValue.rodeInfo?.sampleWidth}}</p>
+            </td>
+            <td>
+              <p><b>Sample Area:</b>&Tab;&Tab;{{openResultValue.rodeInfo?.sampleArea}}</p>
+            </td>
+            <td>
+              <p><b>Sample Unit:</b>&Tab;&Tab;{{openResultValue.rodeInfo?.sampleUnit}}</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p><b>Loc:</b>&Tab;&Tab;{{openResultValue.rodeInfo?.loc}}</p>
+            </td>
+          </tr>
+        </table>
+
+        <div class="card">
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Number </th>
+                <th>Severity </th>
+                <th>Units </th>
+                <th>Quantity </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pciv of PCIValuesPopup; index as i">
+
+                <td>{{pciv.distress_number }}</td>
+                <td>{{pciv.distress_severity }}</td>
+                <td>{{pciv.units }}</td>
+                <td>{{pciv.q1 }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class=" p-2"></div>
+        <table>
+          <tr>
+            <td>
+              <p><b>TDV:</b>&Tab;&Tab;{{openResultValue.TDV | number: '1.0-2'}}</p>
+            </td>
+            <td>
+              <p><b>CDV-max:</b>&Tab;&Tab;{{openResultValue.CDV | number: '1.0-2'}}</p>
+            </td>
+            <td>
+              <p><b>PCI:</b>&Tab;&Tab;{{openResultValue.PCI | number: '1.0-2'}}</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="justify-content-end nav p-1 ">
+    <button printSectionId="print-section" class="btn btn-primary" (click)="printDiv('printableArea')">print</button>
+  </div>
+</ng-template>
+
+<!-- end dialog -->
+
+<div>
+  <h3>Section Condition Report</h3>
+  <h4><span> Section PCI: &Tab;</span>{{finalPCI | number : '1.0-2' }}</h4>
+  <h4><span> Rating: &Tab;</span>{{finalRatting}}</h4>
+  <h4><span> Colour: &Tab;</span>{{colour}}</h4>
+  <h4><span> Maintenance Strategy: &Tab;</span>{{maintenanceStrategy}}</h4>
+</div>

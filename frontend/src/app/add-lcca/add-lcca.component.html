@@ -1,0 +1,124 @@
+<div class="container">
+  <!-- <h2>Life Cycle cost Analysis(LCCA)</h2> -->
+  <div class="row">
+    <div class="col-md-6">
+
+      <table class="table">
+        <tr>
+          <td>Section ID:</td>
+          <td>
+            <input type="text" class="form-control" id="sectionId" name="sectionId" [(ngModel)]="sectionId" required>
+            <input type="text" *ngIf="false" class="form-control" id="username" name="username" [(ngModel)]="username"
+              required>
+          </td>
+        </tr>
+        <tr>
+          <td>Inflation rate:</td>
+          <td> <input type="number" class="form-control" id="inflationRate" name="inflationRate"
+              [(ngModel)]="inflationRate" required>
+          </td>
+        </tr>
+        <tr>
+          <td>Discount rate:</td>
+          <td> <input type="number" class="form-control" id="discountRate" name="discountRate"
+              [(ngModel)]="discountRate" required>
+          </td>
+        </tr>
+        <tr>
+          <td>Section area:</td>
+          <td> <input type="number" class="form-control" id="sectionArea" name="sectionArea" [(ngModel)]="sectionArea"
+              required>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+    <div class="col-md-6">
+      <table class="table">
+        <tr>
+          <td>Initial construction cost:</td>
+          <td> <input type="number" class="form-control" id="initialCost" name="initialCost" [(ngModel)]="initialCost"
+              required>
+          </td>
+        </tr>
+        <tr>
+          <td>Analysis period:</td>
+          <td> <input type="number" class="form-control" id="analysisPeriod" name="analysisPeriod"
+              [(ngModel)]="analysisPeriod" required>
+          </td>
+        </tr>
+        <tr>
+          <td>Salvage value:</td>
+          <td> <input type="number" class="form-control" id="salvageValue" name="salvageValue"
+              [(ngModel)]="salvageValue" required>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- make table -->
+  <br>
+  <table class="table table-success table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Year</th>
+        <th scope="col">Maintenance Type</th>
+        <th scope="col">Current Cost</th>
+        <th scope="col">Future Cost</th>
+        <th scope="col">Present Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of tableRow; let i=index">
+        <td><input type="number" class="form-control" [(ngModel)]="tableRow[i].year" (ngModelChange)="changing()"
+            required></td>
+        <td>
+          <select class="form-control" name="type1" id="type1" [(ngModel)]="tableRow[i].maintenanceType">
+            <option disabled hidden value="undefined">Choose...</option>
+            <option *ngFor="let car of options" [value]="car">{{car}}</option>
+          </select>
+        </td>
+        <td><input type="number" class="form-control" name="cost1" [(ngModel)]="tableRow[i].currentCost"
+            (ngModelChange)="changing()" required></td>
+
+        <td>{{tableRow[i].currentCost*Math.pow((1+inflationRate/100),tableRow[i].year )| number : '1.0-2'}}</td>
+        <td>{{(tableRow[i].currentCost*Math.pow((1+inflationRate/100),tableRow[i].year ))
+          *Math.pow((1/(1+discountRate/100)),tableRow[i].year )| number : '1.0-2'}}</td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td></td>
+        <td>{{currentCostTotal| number : '1.0-2'}}</td>
+        <td>{{futureCostTotal| number : '1.0-2'}}</td>
+        <td>{{presentValueTotal| number : '1.0-2'}}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Present worth cost(PWC):</td>
+        <td>{{PWC| number : '1.0-2'}}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Equivalent Uniform Annual Cost(EUAC):</td>
+        <td>{{EUAC| number : '1.0-2'}}</td>
+      </tr>
+      <tr>
+        <td>
+          <button type="button" class="btn btn-light" (click)="addNew()">add new</button>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <button type="button" class="btn btn-primary" (click)="save()">save</button>
+  <!-- end table -->
+</div>

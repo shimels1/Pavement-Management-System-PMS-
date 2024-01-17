@@ -1,0 +1,292 @@
+<!-- <h3 >Pavement Inventory</h3> -->
+<p-breadcrumb [model]="items" [home]="home"></p-breadcrumb><br>
+<div class="card">
+  <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <button class="btn btn-primary" (click)="open(content)">Add Inventory</button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="rodesRI" [rows]="10" [paginator]="true" styleClass="p-datatable-sm"
+    [(selection)]="selectedRodes" [rowHover]="true" dataKey="sectionID" [rowsPerPageOptions]="[5,10,25,50]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+    [scrollable]="true" [globalFilterFields]="['sectionID']">
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            placeholder="Section ID" />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:10rem">Authority </th>
+        <th style="width:10rem">NetworkID </th>
+        <th style="width:10rem">Branch Name </th>
+        <th style="width:10rem">Section ID </th>
+        <th style="width:10rem">ROW </th>
+        <th style="width:10rem">Functional Class </th>
+        <th style="width:10rem">Pavement Type </th>
+        <th style="width:10rem">SegLength </th>
+        <th style="width:10rem">Pavement Width </th>
+        <th style="width:10rem">Shoulder Width </th>
+        <th style="width:10rem">No of Lanes</th>
+        <th style="width:10rem">Median Width</th>
+        <th style="width:10rem">Divided </th>
+        <th style="width:10rem">Con_main_Reh_Year </th>
+        <th style="width:10rem">Age </th>
+        <th style="width:10rem">Traffic Volume </th>
+        <th style="width:10rem">From </th>
+        <th style="width:10rem">Loc 1 </th>
+        <th style="width:10rem">To </th>
+        <th style="width:10rem">Loc 2 </th>
+        <th style="width:10rem">Submitted By </th>
+        <th style="width:10rem">Submitted On</th>
+        <th style="width:10rem">Collected By</th>
+        <th style="width:10rem">Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rode>
+      <tr>
+        <td style="width:10rem">{{rode.authority }}</td>
+        <td style="width:10rem">{{rode.networkID }}</td>
+        <td style="width:10rem">{{rode.branchName}}</td>
+        <td style="width:10rem">{{rode.sectionID }}</td>
+        <td style="width:10rem">{{rode.ROW }}</td>
+        <td style="width:10rem">{{rode.functionalClass }}</td>
+        <td style="width:10rem">{{rode.pavementType }}</td>
+        <td style="width:10rem">{{rode.segLength }}</td>
+        <td style="width:10rem">{{rode.pavementWidth }}</td>
+        <td style="width:10rem">{{rode.shoulderwidth }}</td>
+        <td style="width:10rem">{{rode.noOfLanes }}</td>
+        <td style="width:10rem">{{rode.medianwidth }}</td>
+        <td style="width:10rem">{{rode.divided }}</td>
+        <td style="width:10rem">{{rode.con_main_Reh_Year }}</td>
+        <td style="width:10rem">{{rode.age }}</td>
+        <td style="width:10rem">{{rode.trafficVolume }}</td>
+        <td style="width:10rem">{{rode.from }}</td>
+        <td style="width:10rem">{{rode.loc1 | json }}</td>
+        <td style="width:10rem">{{rode.to }}</td>
+        <td style="width:10rem">{{rode.loc2 | json }}</td>
+        <td style="width:10rem">{{rode.submittedBy }}</td>
+        <td style="width:10rem">{{rode.submittedOn | date: 'dd/MM/yyyy'}}</td>
+        <td style="width:10rem">{{rode.username }}</td>
+        <td style="width:10rem">
+          <button type="button" class="btn btn-light" (click)="navigateToAddPCI(rode)">Add</button><br>
+          <button type="button" class="btn btn-danger" (click)="deleterode(rode)">Delete</button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="rodeDialog" [style]="{width: '450px'}" header="rode Details" [modal]="true" styleClass="p-fluid">
+  <form #f="ngForm" (ngSubmit)="saveRode(f)">
+    <ng-template pTemplate="content">
+      <div class="p-field">
+        <label for="name">Name</label>
+        <input type="text" pInputText id="name" [(ngModel)]="rode.sectionID" required autofocus />
+        <small class="p-invalid" *ngIf="submitted && !rode.sectionID">Name is required.</small>
+      </div>
+      <div class="p-field">
+        <label for="description">Description</label>
+        <textarea id="description" pInputTextarea [(ngModel)]="rode.submittedBy" required rows="3" cols="20"></textarea>
+      </div>
+
+      <div class="p-field">
+        <label class="p-mb-3">Category</label>
+        <div class="p-formgrid p-grid">
+          <div class="p-field-radiobutton p-col-6">
+            <p-radioButton id="category1" name="category" value="Accessories"
+              [(ngModel)]="rode.functionalClass"></p-radioButton>
+            <label for="category1">Accessories</label>
+          </div>
+          <div class="p-field-radiobutton p-col-6">
+            <p-radioButton id="category2" name="category" value="Clothing"
+              [(ngModel)]="rode.functionalClass"></p-radioButton>
+            <label for="category2">Clothing</label>
+          </div>
+          <div class="p-field-radiobutton p-col-6">
+            <p-radioButton id="category3" name="category" value="Electronics"
+              [(ngModel)]="rode.functionalClass"></p-radioButton>
+            <label for="category3">Electronics</label>
+          </div>
+          <div class="p-field-radiobutton p-col-6">
+            <p-radioButton id="category4" name="category" value="Fitness"
+              [(ngModel)]="rode.functionalClass"></p-radioButton>
+            <label for="category4">Fitness</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-formgrid p-grid">
+        <div class="p-field p-col">
+          <label for="price">Price</label>
+          <p-inputNumber id="price" [(ngModel)]="rode.Y1" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+        </div>
+        <div class="p-field p-col">
+          <label for="quantity">Quantity</label>
+          <p-inputNumber id="quantity" [(ngModel)]="rode.SegLength"></p-inputNumber>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+      <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" type="submit"></button>
+    </ng-template>
+  </form>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" ngModel name="modal-basic-title">Road Network Inventory</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <form class="modal-body">
+    <form class="row g-3" #f="ngForm" (ngSubmit)="saveRode(f)">
+      <div class="col-md-3">
+        <label for="Authority" class="form-label">Authority</label>
+        <input type="text" class="form-control" name="authority" ngModel #Authority="ngModel" required>
+        <input type="text" class="form-control" name="username" *ngIf="false" ngModel #Authority="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="NetworkID" class="form-label">NetworkID</label>
+        <input type="text" class="form-control" name="networkID" ngModel #NetworkID="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="branchName" class="form-label">Branch Name</label>
+        <input type="text" class="form-control" ngModel name="branchName" #branchName="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="sectionID" class="form-label">Section ID</label>
+        <input type="text" class="form-control" ngModel name="sectionID" #sectionID="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="ROW" class="form-label">ROW</label>
+        <input type="number" class="form-control" ngModel name="ROW" #length="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="functionalClass" class="form-label">Functional Class</label>
+        <select ngModel name="functionalClass" class="form-select" #functionalClass="ngModel" required>
+          <option>Principal Arterials Streets</option>
+          <option>Sub_Arterial Streets</option>
+          <option>Collector Streets</option>
+          <option>Local Streets</option>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label for="PavementType" class="form-label">Pavement Type</label>
+        <select ngModel name="pavementType" class="form-select" #surfaceType="ngModel" required>
+          <option>Asphalt Concrete</option>
+          <option>Coble Stone</option>
+          <option>Gravel</option>
+          <option>Cement Concrete</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="SegLength" class="form-label">Seg Length</label>
+        <input type="number" class="form-control" ngModel name="segLength" #length="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="PavementWidth" class="form-label">Pavement Width</label>
+        <input type="number" class="form-control" ngModel name="pavementWidth" #PavementWidth="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="Shoulderwidth" class="form-label">Shoulder width</label>
+        <input type="number" class="form-control" ngModel name="shoulderwidth" #carraigeWayWidth="ngModel">
+      </div>
+
+      <div class="col-md-3">
+        <label for="noOfLanes" class="form-label">No of Lanes</label>
+        <input type="number" class="form-control" ngModel name="noOfLanes" #noOfLanes="ngModel">
+      </div>
+
+      <div class="col-md-3">
+        <label for="Medianwidth" class="form-label">Median width</label>
+        <input type="number" class="form-control" ngModel name="medianwidth" #carraigeWayWidth="ngModel">
+      </div>
+
+      <div class="col-md-3">
+        <label for="divided" class="form-label">Divided</label>
+        <select ngModel name="divided" class="form-select" #divided="ngModel" required>
+          <option selected>Choose...</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label for="Con_main_Reh_Year" class="form-label">Con_main_Reh_Year</label>
+        <input type="text" class="form-control" ngModel name="con_main_Reh_Year" #date="ngModel" required>
+      </div>
+
+
+      <div class="col-md-3">
+        <label for="Age" class="form-label">Age</label>
+        <input type="number" class="form-control" ngModel name="age" #carraigeWayWidth="ngModel">
+      </div>
+
+      <div class="col-md-3">
+        <label for="trafficVolume" class="form-label">Traffic Volume</label>
+        <input type="number" class="form-control" ngModel name="trafficVolume" #trafficVolume="ngModel" required>
+      </div>
+
+
+      <div class="col-md-3">
+        <label for="from" class="form-label">From</label>
+        <input type="text" class="form-control" ngModel name="from" #from="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="x" class="form-label">Easting</label>
+        <input type="number" class="form-control" ngModel name="X" #x="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="y" class="form-label">Northing</label>
+        <input type="number" class="form-control" ngModel name="Y" #y="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="to" class="form-label">To</label>
+        <input type="text" class="form-control" ngModel name="to" #to="ngModel" required>
+      </div>
+
+
+
+      <div class="col-md-3">
+        <label for="X1" class="form-label">Easting</label>
+        <input type="number" class="form-control" ngModel name="X1" #X1="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="Y1" class="form-label">Northing</label>
+        <input type="number" class="form-control" ngModel name="Y1" #Y1="ngModel" required>
+      </div>
+      <div class="col-md-3">
+        <label for="submittedBy" class="form-label">Submitted By</label>
+        <input type="text" class="form-control" ngModel name="submittedBy" #submittedBy="ngModel">
+      </div>
+      <div class="col-md-3">
+        <label for="submittedOn" class="form-label">Submitted On</label>
+        <input type="date" class="form-control" ngModel name="submittedOn" #submittedOn="ngModel">
+      </div>
+      <div class="alert alert-success" role="alert" *ngIf="saveSuccessPopup">
+        Saved
+      </div>
+      <div class="alert alert-danger" role="alert" *ngIf="saveErrorPopup != ''">
+        {{saveErrorPopup}}
+      </div>
+    </form>
+  </form>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" [disabled]="f.form.invalid" (click)="saveRode(f)">Save</button>
+  </div>
+
+</ng-template>
