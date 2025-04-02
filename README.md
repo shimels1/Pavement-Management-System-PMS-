@@ -97,11 +97,11 @@ Before running the project, ensure you have the following installed:
    
 ## Screenshots
 
-![ScreenShot](https://github.com/shimels1/Pavement-Management-System-PMS-/blob/main/screenshot/1.png)
-![ScreenShot](https://github.com/shimels1/Pavement-Management-System-PMS-/blob/main/screenshot/2.png)
-![ScreenShot](https://github.com/shimels1/Pavement-Management-System-PMS-/blob/main/screenshot/3.png)
-![ScreenShot](https://github.com/shimels1/Pavement-Management-System-PMS-/blob/main/screenshot/4.png)
-![ScreenShot](https://github.com/shimels1/Pavement-Management-System-PMS-/blob/main/screenshot/5.png)
+![ScreenShot](https://raw.githubusercontent.com/shimels1/Pavement-Management-System-PMS-/refs/heads/main/screenshots/1.png)
+![ScreenShot](https://raw.githubusercontent.com/shimels1/Pavement-Management-System-PMS-/refs/heads/main/screenshots/2.png)
+![ScreenShot](https://raw.githubusercontent.com/shimels1/Pavement-Management-System-PMS-/refs/heads/main/screenshots/3.png)
+![ScreenShot](https://raw.githubusercontent.com/shimels1/Pavement-Management-System-PMS-/refs/heads/main/screenshots/4.png)
+![ScreenShot](https://raw.githubusercontent.com/shimels1/Pavement-Management-System-PMS-/refs/heads/main/screenshots/5.png)
 
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
