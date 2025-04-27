@@ -1,6 +1,16 @@
+
 # Pavement Management System (PMS)
 
 The **Pavement Management System (PMS)** is a web-based application designed to help manage and maintain pavement infrastructure efficiently. It enables users to track pavement conditions, schedule maintenance, and analyze data for better decision-making.
+
+## Table of Contents
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+  - [Backend (Node.js, Express & PostgreSQL)](#backend-nodejs-express--postgresql)
+  - [Frontend (Angular)](#frontend-angular)
+- [Screenshots](#screenshots)
+- [License](#license)
 
 ## Features
 
@@ -103,6 +113,6 @@ Before running the project, ensure you have the following installed:
 ![ScreenShot](https://raw.githubusercontent.com/shimels1/Pavement-Management-System-PMS-/refs/heads/main/screenshots/4.png)
 ![ScreenShot](https://raw.githubusercontent.com/shimels1/Pavement-Management-System-PMS-/refs/heads/main/screenshots/5.png)
 
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
